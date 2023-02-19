@@ -96,6 +96,7 @@ type ByPrice []domain.Product
 func (p ByPrice) Len() int           { return len(p) }
 func (p ByPrice) Less(i, j int) bool { return p[i].Price < p[j].Price }
 func (p ByPrice) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
+
 func reduce[T, M any](s []T, f func(M, T) M, initValue M) M {
 	acc := initValue
 	for _, v := range s {
@@ -114,7 +115,20 @@ func filter[T any](slice []T, f func(T) bool) []T {
 	return n
 }
 
+func unique[T comparable](s []T) []T {
+	inResult := make(map[T]bool)
+	var result []T
+	for _, str := range s {
+		if _, ok := inResult[str]; !ok {
+			inResult[str] = true
+			result = append(result, str)
+		}
+	}
+	return result
+}
+
 func CalculateByCoupon(items []domain.Product, coupon float64) []domain.Product {
+	items = unique(items)
 	sort.Sort(ByPrice(items))
 
 	item := domain.Product{}
