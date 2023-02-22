@@ -37,7 +37,7 @@ func main() {
 	}
 
 	productController := getProductController()
-	httpRouter.GET("/coupon", productController.Get)
-	httpRouter.GET("/products", productController.FindAll)
+	httpRouter.GET("/coupon", productController.Coupon)
+	httpRouter.GET("/top", productController.FindTop)
 	httpRouter.SERVE(":8000")
 }

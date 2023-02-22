@@ -12,18 +12,18 @@ func NewProductRepository(handler DBHandler) ProductRepository {
 	return ProductRepository{handler}
 }
 
-func (repository ProductRepository) FindProductsByClientId(key string) (*domain.Response, error) {
-	results, err := repository.handler.FindProductsByClientId(key)
+func (repository ProductRepository) FindTopProducts() ([]*domain.Product, error) {
+	results, err := repository.handler.FindTopProducts()
 	if err != nil {
 		return nil, err
 	}
 	return results, err
 }
 
-func (repository ProductRepository) GetProductsByCouponAndClientId(key string, coupon float64) ([]domain.Product, error) {
-	results, err := repository.handler.GetProductsByCouponAndClientId(key, coupon)
+func (repository ProductRepository) CalculateAndSaveProductsBought(input domain.InputParams) ([]domain.Product, error) {
+	results, err := repository.handler.CalculateAndSaveProductsBought(input)
 	if err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }

@@ -5,6 +5,6 @@ import (
 )
 
 type DBHandler interface {
-	FindProductsByClientId(key string) (*domain.Response, error)
-	GetProductsByCouponAndClientId(key string, coupon float64) ([]domain.Product, error)
+	FindTopProducts() ([]*domain.Product, error)
+	CalculateAndSaveProductsBought(input domain.InputParams) ([]domain.Product, error)
 }

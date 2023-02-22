@@ -16,9 +16,9 @@ func NewProductController(productInteractor usecases.ProductInteractor) *Product
 	return &ProductController{productInteractor}
 }
 
-func (pc *ProductController) Get(res http.ResponseWriter, req *http.Request) {
+func (pc *ProductController) Coupon(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "application/json")
-	var params = domain.InputParamsCoupon{}
+	var params = domain.InputParams{}
 	err := json.NewDecoder(req.Body).Decode(&params)
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
@@ -26,7 +26,7 @@ func (pc *ProductController) Get(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	results, err2 := pc.productInteractor.GetProductsByCouponAndClientId(params.Key, params.Coupon)
+	results, err2 := pc.productInteractor.CalculateAndSaveProductsBought(params)
 	if err2 != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(ErrorResponse{Message: err2.Error()})
@@ -37,7 +37,7 @@ func (pc *ProductController) Get(res http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(res).Encode(results)
 }
 
-func (controller *ProductController) FindAll(res http.ResponseWriter, req *http.Request) {
+func (controller *ProductController) FindTop(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "application/json")
 	var params = domain.InputParams{}
 	err := json.NewDecoder(req.Body).Decode(&params)
@@ -48,7 +48,7 @@ func (controller *ProductController) FindAll(res http.ResponseWriter, req *http.
 		return
 	}
 
-	results, err2 := controller.productInteractor.FindProductsByClientId(params.Key)
+	results, err2 := controller.productInteractor.FindTopProducts()
 	if err2 != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(ErrorResponse{Message: err2.Error()})
