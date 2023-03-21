@@ -18,7 +18,7 @@ Aplicación construida en go y clean arquitecture el cual permite hacer uso del 
 ## URLs (EndPoints)
 _1.- Coupon_
 
-[GET] host:port/coupon | Example: http://localhost:8000/coupon
+[GET] host:port/coupon | Ejemplo: https://localhost:8000/coupon
 
     Dado una lista de items (Productos) y el monto total, devuelve la cantidad de items que el usuario tendría que comprar, 
     no excediendo el valor del coupon.
@@ -52,7 +52,7 @@ _1.- Coupon_
 
 _2.- Top_
 
-[GET] host:port/top | Example: http://localhost:8000/top
+[GET] host:port/top | Ejemplo: https://localhost:8000/top
 
 	Devuelve el Top5 de productos mas favoritos.
     Puede observar la cantidad de apariciones a traves de la propiedad (quantity) expuesta en el resultado.
