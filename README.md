@@ -6,10 +6,10 @@ Aplicación construida en go y clean arquitecture el cual permite hacer uso del 
 	2.- La cadena de conexion por defecto es: localhost:6379
     3.- Si desea camnbiar dicha cadena de conexión, debe hacerlo en el archivo main.go
 
-## Ejecución
+## Ejecución (Run)
 	1.- Para levantar o ejecutar la app, hacerlo bajo el siguente código: go run main.go
 
-## Depuración
+## Depuración (Debugger)
 	1.- Si desea realizar depuración en tiempo de ejcución, debes instalar a nivel de vscode el complemento GO
         https://marketplace.visualstudio.com/items?itemName=golang.Go
     2.- Ya se encuentra configurado launch.json para hacer depuraciones.
