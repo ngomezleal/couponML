@@ -19,13 +19,13 @@ Aplicación construida en go y clean arquitecture el cual permite hacer uso del 
 _1.- Coupon_
 _[GET] host:port/coupon | Example: http://localhost:8000/coupon
 
-	"Body Params" (Example)
+	"Body Params" (Ejemplo)
 	{
 	  "item_ids":  ["MCO899299522", "MCO921554676", "MCO878860564", "MCO854851024", "MCO952084987", "MCO571817761", "MCO-1171704643", "MCO607792825","MCO1084100492"],
 	  "amount": 200000.00
 	}
 
-	"Result" (Example)
+	"Result" (Ejemplo)
 	{
 	    "item_ids": [
             {
