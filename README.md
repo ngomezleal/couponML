@@ -20,7 +20,8 @@ _1.- Coupon_
 
 [GET] host:port/coupon | Example: http://localhost:8000/coupon
 
-    Dado una lista de items (Productos) y el monto total, devuelve la cantidad de items que el usuario tendría que comprar, no excediendo el valor del coupon.
+    Dado una lista de items (Productos) y el monto total, devuelve la cantidad de items que el usuario tendría que comprar, 
+    no excediendo el valor del coupon.
 
 	"Body Params" (Ejemplo)
 	{
