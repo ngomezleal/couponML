@@ -13,7 +13,7 @@ func NewProductInteractor(repository domain.ProductRepository) ProductInteractor
 	return ProductInteractor{repository}
 }
 
-func (pi *ProductInteractor) FindTopProducts() ([]*domain.Product, error) {
+func (pi *ProductInteractor) FindTopProducts() ([]domain.OutputTopProductDto, error) {
 	results, err := pi.ProductRepository.FindTopProducts()
 	if err != nil {
 		log.Println(err.Error())
@@ -23,11 +23,11 @@ func (pi *ProductInteractor) FindTopProducts() ([]*domain.Product, error) {
 	return results, err
 }
 
-func (pi *ProductInteractor) CalculateAndSaveProductsBought(input domain.InputParams) ([]domain.Product, error) {
+func (pi *ProductInteractor) CalculateAndSaveProductsBought(input domain.InputParams) (domain.OutputProductDto, error) {
 	results, err := pi.ProductRepository.CalculateAndSaveProductsBought(input)
 	if err != nil {
 		log.Println(err.Error())
-		return nil, err
+		return results, err
 	}
 
 	return results, err

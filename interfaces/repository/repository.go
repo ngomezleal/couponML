@@ -5,6 +5,6 @@ import (
 )
 
 type DBHandler interface {
-	FindTopProducts() ([]*domain.Product, error)
-	CalculateAndSaveProductsBought(input domain.InputParams) ([]domain.Product, error)
+	FindTopProducts() ([]domain.OutputTopProductDto, error)
+	CalculateAndSaveProductsBought(input domain.InputParams) (domain.OutputProductDto, error)
 }

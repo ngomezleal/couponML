@@ -8,6 +8,7 @@ import (
 	"goml/infraestructure/functions"
 	"log"
 
+	"github.com/google/uuid"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -36,83 +37,58 @@ func NewDBHandler(connectString string) (DBHandler, error) {
 	return dbHandler, nil
 }
 
-func (dbHandler DBHandler) FindTopProducts() ([]*domain.Product, error) {
-	var responseObject []*domain.Product
+func (dbHandler DBHandler) FindTopProducts() ([]domain.OutputTopProductDto, error) {
+	var responseObject []domain.OutputTopProductDto
+	var temporalProducts []*domain.Product
+	var responseUnMarshalObject []*domain.Product
+
 	//Get
-	key := ""
-	val, err := dbHandler.RedisClient.Get(ctx, key).Result()
-	if err != nil {
-		return nil, err
+	keys := getAllKeys(dbHandler, ctx, "client*")
+	for _, key := range keys {
+		val, err := dbHandler.RedisClient.Get(ctx, key).Result()
+		if err != nil {
+			return nil, err
+		}
+
+		byteString := []byte(val)
+		errUmarshal := json.Unmarshal(byteString, &responseUnMarshalObject)
+		if errUmarshal != nil {
+			return nil, errUmarshal
+		}
+
+		for _, item := range responseUnMarshalObject {
+			temporalProducts = append(temporalProducts, item)
+		}
 	}
 
-	byteString := []byte(val)
-	errUmarshal := json.Unmarshal(byteString, &responseObject)
-	if errUmarshal != nil {
-		return nil, errUmarshal
-	}
-
+	//Get Top Five
+	responseObject = functions.CalculateTopFive(temporalProducts)
 	return responseObject, nil
 }
 
-func (dbHandler DBHandler) CalculateAndSaveProductsBought(input domain.InputParams) ([]domain.Product, error) {
-	var results []domain.Product
+func (dbHandler DBHandler) CalculateAndSaveProductsBought(input domain.InputParams) (domain.OutputProductDto, error) {
+	var results domain.OutputProductDto
 
 	products := functions.MapItems(input)
 	results = functions.CalculateByCouponAmount(products, input.CouponAmount)
 
 	//Set
-	responseMarshal, _ := json.Marshal(results)
-	dbHandler.RedisClient.Set(ctx, "key", string(responseMarshal), 0)
+	id := uuid.New()
+	responseMarshal, _ := json.Marshal(results.Items)
+	dbHandler.RedisClient.Set(ctx, "client-"+id.String(), string(responseMarshal), 0)
 	return results, nil
 }
 
-// func (dbHandler DBHandler) FindProductsByClientId(key string) (*domain.Response, error) {
-// 	var responseObject domain.Response
+func getAllKeys(dbHandler DBHandler, ctx context.Context, key string) []string {
+	keys := []string{}
 
-// 	//Set
-// 	response, err := http.Get("https://api.mercadolibre.com/sites/MCO/search?seller_id=" + key)
-// 	if err != nil {
-// 		fmt.Println(err.Error())
-// 		os.Exit(1)
-// 	}
-// 	responseData, err := ioutil.ReadAll(response.Body)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	json.Unmarshal(responseData, &responseObject)
-// 	responseMarshal, _ := json.Marshal(responseObject)
-// 	dbHandler.RedisClient.Set(ctx, key, string(responseMarshal), 0)
+	iter := dbHandler.RedisClient.Scan(ctx, 0, key, 0).Iterator()
+	for iter.Next(ctx) {
+		keys = append(keys, iter.Val())
+	}
+	if err := iter.Err(); err != nil {
+		panic(err)
+	}
 
-// 	//Get
-// 	val, err := dbHandler.RedisClient.Get(ctx, key).Result()
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	byteString := []byte(val)
-// 	errUmarshal := json.Unmarshal(byteString, &responseObject)
-// 	if errUmarshal != nil {
-// 		return nil, errUmarshal
-// 	}
-
-// 	return &responseObject, nil
-// }
-
-// func (dbHandler DBHandler) GetProductsByCouponAndClientId(key string, coupon float64) ([]domain.Product, error) {
-// 	var results []domain.Product
-// 	var responseObject domain.Response
-// 	//Get
-// 	val, err := dbHandler.RedisClient.Get(ctx, key).Result()
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	byteString := []byte(val)
-// 	errUmarshal := json.Unmarshal(byteString, &responseObject)
-// 	if errUmarshal != nil {
-// 		return nil, errUmarshal
-// 	}
-
-// 	results = CalculateByCoupon(responseObject.Results, coupon)
-// 	return results, err
-// }
+	return keys
+}

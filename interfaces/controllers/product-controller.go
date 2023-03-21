@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"goml/domain"
 	"goml/usecases"
 	"net/http"
@@ -39,15 +38,6 @@ func (pc *ProductController) Coupon(res http.ResponseWriter, req *http.Request) 
 
 func (controller *ProductController) FindTop(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "application/json")
-	var params = domain.InputParams{}
-	err := json.NewDecoder(req.Body).Decode(&params)
-	if err != nil {
-		fmt.Println("error")
-		res.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(res).Encode(ErrorResponse{Message: "Invalid Payload"})
-		return
-	}
-
 	results, err2 := controller.productInteractor.FindTopProducts()
 	if err2 != nil {
 		res.WriteHeader(http.StatusInternalServerError)
