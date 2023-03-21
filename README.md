@@ -29,7 +29,7 @@ _1.- Coupon_
 	  "amount": 200000.00
 	}
 
-	"Result" (Ejemplo)
+	"Resultado" (Ejemplo)
 	{
 	    "item_ids": [
             {
@@ -57,7 +57,7 @@ _2.- Top_
 	Devuelve el Top5 de productos mas favoritos.
     Puede observar la cantidad de apariciones a traves de la propiedad (quantity) expuesta en el resultado.
 
-	"Result" (Example)
+	"Resultado" (Ejemplo)
 	{
         {
             "id": "MCO952084987",
