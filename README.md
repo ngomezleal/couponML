@@ -8,6 +8,10 @@ Aplicación construida en go y clean arquitecture el cual permite hacer uso del 
 
 ## Ejecución (Run)
 	1.- Para levantar o ejecutar la app, hacerlo bajo el siguente código: go run main.go
+    2.- Si la conexion es aceptada la respuesta será: 
+        PONG
+        Mux HTTP server running on port :8000
+
 
 ## Depuración (Debugger)
 	1.- Si desea realizar depuración en tiempo de ejcución, debes instalar a nivel de vscode el complemento GO
