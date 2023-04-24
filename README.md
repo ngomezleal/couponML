@@ -2,7 +2,7 @@
 Aplicación construida en go y clean arquitecture el cual permite hacer uso del coupon para realizar la comprar tantos ítems marcados como favoritos sea posible.
 
 ## Redis DataBase
-	1.- Tener instalado redis como manejador de base de datos.
+	1.- Tener instalado redis como persistenca de datos.
 	2.- La cadena de conexion por defecto es: localhost:6379
     3.- Si desea camnbiar dicha cadena de conexión, debe hacerlo en el archivo main.go
 
